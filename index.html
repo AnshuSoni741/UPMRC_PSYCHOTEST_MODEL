@@ -74,6 +74,7 @@
         height: 80px;
         min-width: 120px;
         background-color: white;
+         padding: 10px 20px;
         /* box-shadow: 0px 0px 43px 40px red; */
         border-radius: 5rem;
         font-size: 25px;
@@ -104,10 +105,10 @@
     </header>
     <main>
         <div id="Q_LIGHT_Container">
-            <div id="Q_LIGHT">QLIGHT</div>
+            <div id="Q_LIGHT"></div>
         </div>
         <div id="A_LIGHT_Container">
-            <div id="A_LIGHT">ALIGHT</div>
+            <div id="A_LIGHT"></div>
         </div>
         <div id="message_container">
             <div id="score"></div>
@@ -202,7 +203,7 @@
                 A_LIGHT.innerText = `Your Right attmpt : ${p_marks} 
                 Your Wrong attempts : ${n_marks}`;
             } else {
-                A_LIGHT.innerText = "Please Once Start the test..."
+                A_LIGHT.innerText = "Please Attend Test At Least Once..."
             }
             document.querySelector("#start").innerText = "Restart";
             document.querySelector("#start").style.display = "block";
