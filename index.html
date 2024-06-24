@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPMRC_PSYCHO_TEST</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        /* display: block; */
+    }
+
+    header {
+        background-color: rgb(79, 79, 224);
+        width: 100%;
+        text-align: center;
+        height: 60px;
+        padding-top: 25px;
+    }
+
+    main {
+        /* background-color: rgb(117, 117, 236); */
+        width: 100%;
+        text-align: center;
+    }
+
+
+    footer {
+        background-color: blue;
+        color: white;
+        width: 100%;
+        height: 60px;
+        padding-top: 20px;
+        text-align: center;
+        font-size: 25px;
+        text-decoration: underline;
+    }
+
+    #Q_LIGHT_Container,
+    #A_LIGHT_Container {
+        width: 100%;
+        background-color: rgb(107, 107, 240);
+        height: 200px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #Q_LIGHT {
+        margin-top: 60px;
+        height: 100px;
+        width: 200px;
+        background-color: white;
+        box-shadow: 0px 0px 43px 40px white;
+        border-radius: 5rem;
+    }
+
+    #A_LIGHT {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 50px;
+        height: 80px;
+        min-width: 120px;
+        background-color: white;
+        /* box-shadow: 0px 0px 43px 40px red; */
+        border-radius: 5rem;
+        font-size: 25px;
+    }
+
+    #button_container {
+        padding: 20px 0px;
+        background-color: blueviolet;
+        height: 40px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        column-gap: 400px;
+    }
+
+    #button_container button {
+        font-size: 25px;
+        padding: 7px 30px;
+        border-radius: 2rem;
+
+    }
+</style>
+
+<body>
+    <header>
+        <h1>UPMRC_PSYCHO_TEST</h1>
+    </header>
+    <main>
+        <div id="Q_LIGHT_Container">
+            <div id="Q_LIGHT">QLIGHT</div>
+        </div>
+        <div id="A_LIGHT_Container">
+            <div id="A_LIGHT">ALIGHT</div>
+        </div>
+        <div id="message_container">
+            <div id="score"></div>
+        </div>
+        <div id="button_container">
+            <button id="start" onclick=start()>start</button>
+            <button id="stop" onclick=stop()>stop</button>
+            <button onclick=exit()>Exit</button>
+        </div>
+    </main>
+    <Footer>YOU CAN CHECK YOUR IQ AND RESPOSE BY THIS TEST</Footer>
+    <script>
+        let response_time_ms = 2000;
+        let interval_time = 1000;
+        let Q_LIGHT = document.querySelector("#Q_LIGHT");
+        let A_LIGHT = document.querySelector("#A_LIGHT");
+        let arr = ["red", "green", "yellow"];
+        let start_status = false;
+        let stop_status = false;
+        let interval_setting;
+        let current_color = "white";
+        let current_run;
+        let p_marks = 0;
+        let n_marks = 0;
+        let exit = () => {
+            window.close();
+        };
+
+        window.addEventListener('keydown', (event) => {
+            current_key = event.key;
+            console.log(current_key);
+            if (current_color != "white") {
+                if (current_key == 'r' || current_key == 'g' || current_key == 'y') {
+                    if ((current_color == "red" && current_key == 'r') || (current_color == "green" && current_key == 'g') || (current_color == "yellow" && current_key == 'y')) {
+                        A_LIGHT.style.backgroundColor = current_color;
+                        A_LIGHT.innerText = "Right choice...";
+                        console.log("right choice...");
+                        p_marks = p_marks + 1;
+                    } else {
+                        n_marks = n_marks + 1;
+                        A_LIGHT.style.backgroundColor = "white";
+                        A_LIGHT.innerText = "Wrong choice";
+                        // console.log("wrong choice...");
+                    }
+                } else {
+                    A_LIGHT.style.backgroundColor = "white";
+                    A_LIGHT.innerText = "Wrong choice";
+                    console.log("wrong choice");
+                    n_marks = n_marks + 1;
+                }
+            }
+        });
+
+        let start = () => {
+            if (!start_status) {
+                n_marks = 0;
+                p_marks = 0;
+                A_LIGHT.innerText = "";
+                document.querySelector("#start").style.display = "None";
+
+
+                current_run = setInterval(() => {
+                    let ran_num = Math.round(Math.random() * 2);
+                    current_color = arr[ran_num];
+                    // console.log(current_color);
+                    Q_LIGHT.style.backgroundColor = `${arr[ran_num]}`;
+                    Q_LIGHT.style.boxShadow = `0px 0px 43px 40px ${arr[ran_num]}`;
+                    interval_setting = setTimeout(() => {
+                        current_color = "white";
+                        Q_LIGHT.style.backgroundColor = `white`;
+                        Q_LIGHT.style.boxShadow = `0px 0px 43px 40px white`;
+                        A_LIGHT.style.backgroundColor = `white`;
+                        A_LIGHT.innerText = "";
+                        // console.log(current_color);
+                    }, response_time_ms);
+                }, (response_time_ms + interval_time));
+                start_status = true;
+            }
+
+        }
+
+
+        let stop = () => {
+            start_status = false;
+            clearInterval(current_run);
+            clearInterval(interval_setting);
+            current_color = "white";
+            Q_LIGHT.style.backgroundColor = `white`;
+            Q_LIGHT.style.boxShadow = `0px 0px 43px 40px white`;
+            A_LIGHT.style.backgroundColor = `white`;
+            if (p_marks || n_marks) {
+                A_LIGHT.innerText = `Your Right attmpt : ${p_marks} 
+                Your Wrong attempts : ${n_marks}`;
+            } else {
+                A_LIGHT.innerText = "Please Once Start the test..."
+            }
+            document.querySelector("#start").innerText = "Restart";
+            document.querySelector("#start").style.display = "block";
+            n_marks = 0;
+            p_marks = 0;
+        }
+
+    </script>
+
+</body>
+
+</html>
